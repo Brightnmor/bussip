@@ -1,0 +1,35 @@
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="bus-book">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #9E9E9E;
+        align-items: center;
+        justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+      }
+     paper-button{
+      background-color: #FF1744;
+      color: white;
+    }
+     
+    </style>
+
+
+    <h2>Register your Bus Company here</h2>
+   <paper-button raised>Register</paper-button>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'bus-book'
+    });
+  </script>
+</dom-module>

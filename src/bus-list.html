@@ -1,0 +1,138 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<dom-module id="bus-list">
+  <template>
+    <style include="shared-styles">
+      :host {
+         display: block;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      margin-left: auto;
+      margin-right: auto;
+
+        }
+         iron-list {
+      flex: 1 1 auto;
+    }
+       
+        iron-list{
+          height: 100vh;
+        }
+        img{
+          width: 40px;
+          height: 40px;
+          border-radius: 50px;
+          margin-left: 10px;
+
+        }
+        .full{
+         
+         display: flex;
+         padding: 10px;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+            padding-top: 5px;
+            padding-left: 16px;
+            font-size: 16px;
+        }
+        .times{
+          margin-left: auto;
+        }
+        .last{
+          margin-left: auto;
+          font-size: 16px;
+        }
+        a{
+          text-decoration: none;
+        }
+        a:hover{
+          background: grey;
+        }
+    </style>
+
+    <app-route
+
+        route="{{route}}"
+        pattern="/:type"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+
+  <firebase-query
+    id="query"
+    path="/routes/[[routeData.type]]"
+    data="{{data}}">
+  </firebase-query>
+
+<template is='dom-repeat' items="[[data]]">
+<a href="/detail/[[routeData.type]]/[[hi]]">
+<div class="full" on-tap="me">
+<img src="[[item.image]]"><div>
+<p class="names">[[item.name]]</p> 
+</div>
+
+<span class="last">
+<span class="last">[[item.type]]</span>
+[[item.price]].00</span>
+</div>
+
+</a>
+</template>
+
+
+
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'bus-list',
+      properties:{
+        route:Object,
+         active: {
+          type: Boolean,
+          observer: '_activeDidChange'
+        },
+        hi:String
+       
+      },
+       _activeDidChange: function(active) {
+        if (active) {
+          this.fire('setup-toolbar', {
+            leftItemIcon: 'arrow-back',
+            hold:true,
+            leftItemClickAction: function() {
+             window.history.back();
+               this.fire('setup-toolbar',{
+                leftItemIcon:'menu'
+               });
+              }
+          });
+        }
+      },
+      me:function(e){
+        this.hi = e.model.item.name;
+
+      }
+    });
+  </script>
+</dom-module>

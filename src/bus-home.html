@@ -1,0 +1,330 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="bus-footer.html">
+<link rel="import" href="bus-book.html">
+
+<dom-module id="bus-home">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 0px;
+      }
+      #search{
+        background-color: #00C853;
+        height: 70px;
+        width: 50%;
+      }
+      #chatter{
+        background-color: #FFAB00;
+        height: 70px;
+        width: 50%;
+      }
+      .choose{
+        display: flex;
+        width: 230px;
+        background-color: blue;
+       height: 70px;
+        font-size: 20px;
+       
+        margin-left: 0px;
+      }
+      .pack{
+        background-color: #00C853;
+        margin-left: 0px;
+      }
+
+      .header{
+        display: block;
+        height: 100px;
+        background-color: #006064;
+        padding-top: 30px;
+        width: 100
+
+      }
+      h1, h3{
+          color: white;
+          text-shadow: 2px 2px black;
+          text-align: center;
+          font-size: 34px;
+      }
+       .porpularRoute{
+          background-image: url("/images/loc.jpg");
+           border-radius: 3px;
+          background-repeat: no-repeat;
+       background-size: cover;
+    background-position: center; 
+        }
+        .busCompany{
+           background-image: url("/images/bus.jpg");
+           background-repeat: no-repeat;
+       background-size: cover;
+    background-position: center; 
+           border-radius: 3px;
+        }
+        .mostVisitedCity{
+        background-image: url("/images/city.jpg");
+         border-radius: 3px;
+           background-repeat: no-repeat;
+       background-size: cover;
+    background-position: center; 
+        }
+        .mostUsedBus{
+           background-image: url("/images/gig.jpg");
+            border-radius: 3px;
+              background-repeat: no-repeat;
+       background-size: cover;
+    background-position: center; 
+        }
+      *{
+        outline: 0px solid red;
+      }
+      a{
+        text-decoration: none;
+        color: white;
+        padding: 40px;
+      }
+      .container{
+       display: flex;
+      
+       align-content: center;
+       align-items: center;
+       justify-content: center;
+       padding: 0px;
+       margin-top: 10px;
+       margin-bottom: 10px;
+      }
+      .container1{
+       display: flex;
+       width: 100%;
+      }
+      .box{
+        display: flex;
+ align-content: center;
+       align-items: center;
+       justify-content: center;
+        width: 50%;
+        height: 400px;
+        margin: 20px;
+
+      }
+      input{
+        margin-left: 10px;
+        height: 30px;
+      }
+    input:focus{
+      
+      border:1px solid red;
+    }
+    paper-button{
+      background-color: #FF1744;
+    }
+     p{
+        margin:10px;
+        font-size: 24px;
+        text-align: center;
+      }
+      @media(max-width: 650px){
+         .box{
+        display: flex;
+
+        width: 100%;
+        height: 250px;
+        margin: 0px;
+        margin-top: 10px;
+
+      }
+      paper-button{
+        margin: 0px;
+      }
+        .container{
+       display: flex;
+       flex-wrap: wrap;
+       width: 100%;
+      }
+      h1,h3{
+        font-size: 20px;
+      }
+
+      }
+       @media(max-width: 350px){
+       .box{
+        display: flex;
+
+        width: 100%;
+        height: 250px;
+        margin: 10px;
+
+      }
+         .container{
+       display: flex;
+       flex-wrap: wrap;
+       width: 100%;
+      }
+       h1,h3{
+        font-size: 20px;
+      }
+        
+      }
+
+    </style>
+
+    <iron-media-query
+        query="max-width: 1280px"
+        query-matches="{{smallScreen}}"></iron-media-query>
+<div class="header">
+      <h1>Easiest way to book bus ticket</h1>
+</div>
+<div class="pack" style="[[backc]]">
+<div class="choose"><div id="search" on-tap="find">Search Bus</div><div id="chatter" on-tap="chater">Chatter Bus</div></div>
+
+<div class="container">
+
+
+ <input is="iron-input"  list="currentlocales" id="leaving" type="text" placeholder="leaving from" autocomplete="currentlocales" required >
+          <input list="currentlocales" id="going" type="text" placeholder="going to" autocomplete="name" required >
+
+          <datalist id="currentlocales">
+              <option value="Abia">
+              <option value="Adamawa">
+              <option value="Anambra">
+              <option value="Akwa Ibom">
+              <option value="Bauchi">
+              <option value="Bayelsa">
+              <option value="Benue">
+              <option value="Borno">
+              <option value="Cross River">
+              <option value="delta">
+              <option value="Ebonyi">
+              <option value="Enugu">
+              <option value="Edo">
+              <option value="Ekiti">
+              <option value="Gombe">
+              <option value="Imo">
+              <option value="Jigawa">
+              <option value="Kaduna">
+              <option value="Kano">
+              <option value="Katsina">
+              <option value="Kebbi">
+              <option value="Kogi">
+              <option value="Kwara">
+              <option value="lagos">
+              <option value="Nasarawa">
+              <option value="Niger">
+              <option value="Ogun">
+              <option value="Ondo">
+              <option value="Osun">
+              <option value="Oyo">
+              <option value="Plateau">
+              <option value="Rivers">
+              <option value="Sokoto">
+              <option value="Taraba">
+              <option value="Yobe">
+              <option value="Zamfara">
+            </datalist>
+<a href$="/list/[[screen]]">
+<paper-button raised on-tap="calc">search</paper-button>
+</a>
+</div>
+</div>
+   <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+     
+   </p>   
+
+<div class="container">
+
+<div class="box porpularRoute">
+<a href="/list/porpularroute">
+  <h3>Popular Routes</h3>
+  </a>
+</div>
+<div class="box mostVisitedCity">
+<a href="/list/mostcisitedcity">
+  <h3>Most Visited City</h3>
+  </a>
+</div>
+
+</div>
+
+<bus-book></bus-book>
+<bus-footer></bus-footer>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'bus-home',
+      properties:{
+         screen:String,
+         backc:String,
+
+         active: Boolean,
+         /* whether the user is on a small screen device*/
+        smallScreen: Boolean,
+        /* whether the drawer is opened or not */
+        openedDrawer: {
+          type: Boolean,
+          value: true
+        },
+        /* whether the drawer is always visible */
+        persistentDrawer: {
+          type: Boolean,
+          value: true
+         }
+      },
+      observers: [
+        '_updateToolbar(active, smallScreen)'
+      ],
+      chater:function(){
+         this.backc = "background-color:#FFAB00"
+      },
+       find:function(){
+         this.backc = "background-color:#00C853"
+      },
+      calc:function(){
+        if(this.backc == "background-color:#FFAB00"){
+       var leave = this.$.leaving.value;
+       var go = this.$.going.value;
+      this.screen ="chatter" + leave +"to"+go;
+      }
+      else{
+         var leave = this.$.leaving.value;
+       var go = this.$.going.value;
+      this.screen = leave +"to"+go;
+      }
+      //var poe = document.getElementById('po');
+      //poe.innerText = screen;
+      },
+        _updateToolbar: function(active, smallScreen) {
+        if (active) {
+          this.fire('setup-toolbar', {
+            leftItemIcon: smallScreen ? 'menu' : '',
+            leftItemClickAction: function() { this.openedDrawer = true; }.bind(this)
+          });
+        }
+        this.persistentDrawer = !smallScreen;
+        this.openedDrawer = !smallScreen;
+      }
+    });
+  </script>
+</dom-module>

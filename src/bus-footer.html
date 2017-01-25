@@ -1,0 +1,33 @@
+<dom-module id="bus-footer">
+	<template>
+		<style>
+			:host{
+				display: block;
+			}
+			div{
+				display: flex;
+				background-color: black;
+				height: 100px;
+				color: white;
+				justify-content: center;
+				align-items: center;
+			}
+			a{
+				color: white;
+				margin: 5px;
+			}
+		</style>
+		 <footer>
+      <div>
+        <a target="_blank" href="https://dewbicon.com" data-outbound="license-txt">&copy; 2016 Dewbicon Technologies</a>
+        <a href="#">Contact Us</a>
+        <a href="#">FAQ</a>
+       </div>
+    </footer>
+	</template>
+	<script>
+		Polymer({
+			is:'bus-footer'
+		})
+	</script>
+</dom-module>

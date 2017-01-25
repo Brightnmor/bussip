@@ -1,0 +1,429 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="bus-payment.html">
+<link rel="import" href="bus-footer.html">
+
+<dom-module id="bus-detail">
+  <template>
+    <style is="custom-styles">
+      :host {
+        display: block;
+      }
+      #voices{
+        color:red;
+      }
+      .same{
+        display: flex;
+        margin:10px;
+
+      }
+      .row{
+         display: flex;
+        flex-wrap: wrap;
+         justify-content: center;
+        align-items: center;
+        padding: 30px;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .covers{    
+        display: block;
+       width: 60%;
+       
+        
+      }
+      .mid{
+        display: block;
+        align-items: center;
+        justify-content: center;
+        width: 60%;
+        margin: 0px;
+        padding: 20px;
+      }
+      .mid2{
+        display: block;
+        align-items: center;
+        justify-content: center;
+         width: 60%;
+         margin: 0px;
+         padding: 20px;
+      }
+      .mid3{
+        display: block;
+        align-items: center;
+        justify-content: center;
+         width: 40%;
+      }
+      iron-icon{
+        margin-right: 30px;
+      }
+      paper-fab{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin:5px;
+      }
+      h1,h2,h3{
+        text-align: center;
+        color: #4A148C;
+        
+        border-radius: 20px;
+        
+       
+      }
+       .header{
+        display: block;
+        height: 100px;
+        background-color: #607D8B;
+        padding-top: 30px;
+        width: 100
+       
+      }
+      .hwhite{
+         color:white;
+      }
+      paper-dropdown-menu{
+        margin:0px;
+        width: 100%;
+         text-align: center;
+          --paper-input-container-color:#42A5F5;
+      }
+      bus-payment{
+         text-align: center;
+         justify-content: center;
+         align-content: center;
+      }
+      paper-button{
+        background: #FF1744;
+        color:white;
+        justify-content: center;
+      }
+       --paper-font-caption:{
+        color:blue;
+       }
+      paper-input{
+        text-align: center;
+
+        --paper-input-container-color:#42A5F5;
+      }
+      paper-material{
+         padding: 30px;
+         margin: 10px;
+         background:white;
+         align-content: center;
+         align-items: center;
+      }
+      @media(max-width: 823px){
+        :host{
+          padding: 0;
+          margin: 20px;
+          display: block;
+        }
+        .mid,.mid2,.mid3{
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          display:  block;
+        }
+        .covers{    
+        display: block;
+       width: 100%;
+      }
+      .row{
+        width: 100%;
+        padding: 0px;
+      }
+       @media(max-width: 423px){
+        :host{
+          padding: 0;
+          margin: 0px;
+          display: block;
+        }
+        .mid,.mid2,.mid3{
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          display:  block;
+        }
+        .covers{    
+        display: block;
+       width: 100%;
+      }
+      .row{
+        width: 100%;
+        padding: 0px;
+      }
+    }
+
+    </style>
+
+     <app-route
+
+        route="{{route}}"
+        pattern="/:type/:slug"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+       <iron-media-query
+        query="max-width: 1280px"
+        query-matches="{{smallScreen}}"></iron-media-query>
+
+        <firebase-auth
+         id="auth" 
+         user="{{user}}" 
+         provider="google" 
+         on-error="handleError">
+        </firebase-auth>
+
+   <firebase-document
+     path="/routes/[[routeData.type]]/[[routeData.slug]]"
+     data="{{item}}">
+   </firebase-document>
+
+   <firebase-document
+     path="/bus-company/[[routeData.slug]]"
+     data="{{data}}">
+   </firebase-document>
+<div class="header">
+      <h1 class="hwhite">Travelers Details</h1>
+</div>
+<div class="row">
+<div class="covers">
+    <div class="mid">
+    <paper-material elevation="1">
+   
+    <h2>Travel Detail</h2>
+     <p> ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+ </p>
+     <bus-payment title="leaving" value="lagos"></bus-payment> 
+      <bus-payment title="going" value="delta"></bus-payment>
+      
+
+     </paper-material>
+    </div>
+
+
+    <div class="mid2">
+    <paper-material elevation="2">
+  <h2>Bus Detail</h2>
+  <p> [[data.discription]]
+ </p>
+   <bus-payment title="Name" value="[[data.name]]"></bus-payment> 
+      <bus-payment title="Phone-no" value="[[data.phone_no]]"></bus-payment>
+       <bus-payment title="Rate" value="[[data.rate]]"></bus-payment>
+    </paper-material>
+    </div>
+</div>
+
+<form>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+</form>
+    <div class="mid3">
+    <paper-material elevation="3">
+   <h2>Book</h2>
+    <div id="voices"></div>
+    
+    <paper-dropdown-menu id="drop" label="No of people going">
+  <paper-listbox class="dropdown-content">
+    <paper-item>1</paper-item>
+    <paper-item>2</paper-item>
+    <paper-item>3</paper-item>
+    <paper-item>4</paper-item>
+  </paper-listbox>
+</paper-dropdown-menu>
+
+  <paper-input name="name" label="Enter Name" id="nam"></paper-input>  
+ <paper-input name="adress" label="Enter Adress" id="adress"></paper-input>
+<paper-input name="phone" label=" Next of kin phone Number" id="phone"></paper-input>
+
+ <div class="same"  on-tap="dates">
+ <iron-icon src="/images/calendar.png"></iron-icon>
+ <div>[[date]]</div>
+ </div>
+ <paper-dialog id="dialog" class="paper-date-picker-dialog" 
+  on-iron-overlay-closed="dismissDialog">
+  <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
+  <div class="buttons">
+    <paper-button dialog-dismiss>Cancel</paper-button>
+    <paper-button dialog-confirm>OK</paper-button>
+  </div>
+</paper-dialog>
+<paper-dialog id="sign">
+  <h2>signing</h2>
+  
+  <div class="buttons">
+    <paper-button dialog-dismiss id="btnsignin" on-tap="buttonSignIn">signin with google</paper-button>
+    
+  </div>
+</paper-dialog>
+     <center> <paper-button raised on-tap="validates">Book</paper-button> </center>
+   
+    
+</paper-material>
+    </div>
+    </div>
+
+    <paper-fab icon="maps:directions-bus" title="map"></paper-fab>
+    <bus-footer></bus-footer>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'bus-detail',
+      properties:{
+        route:Object,
+         smallScreen: Boolean,
+        routeData:Object,
+        many:{
+          type:Number,
+          value:1
+        },
+        user:Object,
+        active: {
+          type: Boolean,
+          observer: '_activeDidChange'
+        },
+         openedDrawer: {
+          type: Boolean,
+          value: true
+        }
+      },
+       observers: [
+        '_updateToolbar(active, smallScreen)'
+      ],
+       _activeDidChange: function(active) {
+        if (active) {
+          this.fire('setup-toolbar', {
+            leftItemIcon: 'arrow-back',
+            hold:true,
+            leftItemClickAction: function() {
+             window.history.back();
+              }
+          });
+        }
+      },
+       _updateToolbar: function(active, smallScreen) {
+        if (active) {
+          this.fire('setup-toolbar', {
+            leftItemIcon: smallScreen ? 'arrow-back' : '',
+            hold:true,
+            leftItemClickAction: function() {  window.history.back(); }
+          });
+        }
+        this.persistentDrawer = !smallScreen;
+        
+      },
+      dates:function(){
+        this.$.dialog.open();
+      },
+      validates:function(){
+         var warning = "";
+         var name = this.$.nam.value;
+         var phone = this.$.phone.value;
+         var adress = this.$.adress.value;
+       
+        if(name === ""){
+          warning += " please enter name<br>";
+        }
+        if (adress === ""){
+          warning += " please enter address<br>";
+        }
+         if(phone === ""){
+          warning += "please enter a phone number<br>";
+        }
+          var voice = this.$.voices;
+         voice.innerHTML = warning;  
+         if(warning === ""){
+          if(this.$.auth.signedIn !== true){
+             this.$.sign.open();
+          }
+          var rand = Math.random() * 100;
+         var handler = PaystackPop.setup({
+      key: 'pk_test_8643bfefe74483ed2b58c6e51bbb07e1872035bb',
+      email: this.user.email,
+      amount: 30000,
+      ref: rand,
+      metadata: {
+         custom_fields: [
+            {
+                display_name: this.user.displayName,
+                variable_name: "this.user.displayName",
+                value: 08033359273
+            }
+         ]
+      },
+      callback: function(response){
+          alert('success. transaction ref is ' + response.reference);
+      },
+      onClose: function(){
+          alert('window closed');
+      }
+    });
+    handler.openIframe();
+          
+         }
+      },
+      buttonSignOut:function(){
+        this.$.auth.signOut(); 
+      },
+      buttonSignIn:function(){
+        this.$.auth.signInWithPopup(); 
+          var rand = Math.random() * 100;
+        if(this.$.auth.signedIn === true){
+           var handler = PaystackPop.setup({
+      key: 'pk_test_8643bfefe74483ed2b58c6e51bbb07e1872035bb',
+      email: this.user.email,
+      amount: 30000,
+      ref: rand,
+      metadata: {
+         custom_fields: [
+            {
+                display_name: this.user.displayName,
+                variable_name: "this.user.displayName",
+                value: 08033359273
+            }
+         ]
+      },
+      callback: function(response){
+          alert('success. transaction ref is ' + response.reference);
+      },
+      onClose: function(){
+          alert('window closed');
+      }
+    });
+    handler.openIframe();
+        }
+      }
+
+    });
+  </script>
+  
+</dom-module>

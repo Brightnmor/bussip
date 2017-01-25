@@ -1,0 +1,67 @@
+<link rel="import" type="text/css" href="">
+<dom-module id="bus-payment">
+	<template>
+		 <style>
+		 	  :host {
+        display: flex;
+       
+        padding: 10px;
+        
+      }
+      .title{
+         
+         width: 150px;
+         height: 30px;
+         background: #CFD8DC;
+         box-shadow: 10px solid black;
+         padding: 2px;
+         margin-left: 0px;
+         padding-left: 0px;
+         padding-bottom: 0;
+         text-align: center;
+         border-top-right-radius: 30px;
+         border-bottom: 1px solid #4A148C;
+         font-size: 16px;
+         color: #4A148C;
+         font-weight: bold;
+        
+         text-transform: capitalize;
+      }
+      .ball{
+        width: 20px;
+        height: 20px;
+        border-radius: 50px;
+        background:  white;
+        margin-top: 0px;
+        float: left;
+        margin-left: 10px;
+        
+      }
+      .value{
+        border-bottom: 1px solid #4A148C;
+         width: 140px;
+         height: 27px;
+         margin-top: 5px;
+         padding-left: 15px;
+         background: #ECEFF1;
+         border-top-left-radius: 25px;
+         font-size: 14px;
+      }
+		 </style>
+
+    <div class="title">[[title]]
+         <div class="ball"></div>
+    </div>
+    <div class="value">[[value]]</div>
+   
+	</template>
+	<script>
+		Polymer({
+			is:'bus-payment',
+      properties:{
+        title:String,
+        value:String
+      }
+		})
+	</script>
+</dom-module>
